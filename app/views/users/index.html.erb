@@ -1,0 +1,103 @@
+<h1 class="object_title">Users Index</h1>
+<%= form_tag('/users', :method => "get") do %>
+  <table class="search_table">
+    <tr>
+      <td><%= label_tag :approved %></td>
+      <td>
+        <%= select_tag "search_approved",
+                        options_for_select(
+                          { "Approved": "t", "Not Approved": "f" },
+                        "#{params[:search_approved]}"),
+                        prompt:"---",
+                        style:"width: 100%;" %>
+      </td>
+      <td><%= label_tag :role %></td>
+      <td><%
+            {style:"width: 100%;
+                    display:block;",
+             name:"search_role",
+             id:"search_role",
+             multiple: false,
+             prompt:"---"}
+             %>
+          <select name="search_role" style="width: 100%;">
+            <% if params[:search_role].blank? || params[:search_role] == 'all' %>
+              <option value="all" selected>---</option>
+            <% else %>
+              <option value="all">---</option>
+            <% end %>
+            <% if params[:search_role]== 'nil' %>
+              <option value='nil' selected>no role</option>
+            <% else %>
+              <option value='nil'>no role</option>
+            <% end %>
+            <% Role.all.each do | role | %>
+              <% if role.id == params[:search_role].to_i %>
+                <option value="<%= role.id %>" selected><%= role.name %></option>
+              <% else %>
+                <option value="<%= role.id %>"><%= role.name %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><%= label_tag :first_name %></td>
+        <td><%= text_field_tag "search_first_name", "#{params[:search_first_name]}"%></td>
+        <td><%= label_tag :last_name %></td>
+        <td><%= text_field_tag "search_last_name", "#{params[:search_last_name]}"%></td>
+      </tr>
+      <tr>
+        <td><%= label_tag :email %></td>
+        <td><%= text_field_tag "search_email", "#{params[:search_email]}"%></td>
+        <td colspan="2" style="text-align:center;">
+        <%= submit_tag 'Search', class:"btn btn-primary", tabindex:"10" %></td>
+      </tr>
+    </table>
+  <% end %>
+<div class="pagination_details">
+  <%= page_entries_info @tasks %>
+</div>
+<table class="table table-responsive table-hover table-bordered" style="width:60%;">
+  <tr>
+    <th>Image</th>
+    <th>ID</th>
+    <th>Email</th>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Role</th>
+    <th style="text-align:center;">Approved?</th>
+    <th colspan="4"></th>
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td valign='top'>
+        <%= image_tag(File.join(root_url,
+                                "users",
+                                 user.id.to_s,
+                                 "thumb",
+                                 "serve_avatar")) %>
+
+      </td>
+      <td><%= user.id %></td>
+      <td><%= user.email %></td>
+      <td><%= user.first_name %></td>
+      <td><%= user.last_name %></td>
+      <td><%= user.role ? user.role.name : "no role" %></td>
+      <td><%= user.approved ? "Yes": "No" %></td>
+      <% if can? :show, user %>
+        <td><%= link_to 'Show', user %></td>
+      <% end %>
+      <% if can? :update, user %>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+      <% end %>
+      <% if can? :update, user %>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<div class="digg_pagination" style="width:20%;">
+  <%= will_paginate @users, container: false, previous_label:'Previous', next_label: 'Next' %>
+</div>

@@ -1,0 +1,14 @@
+<div class="show_div">
+  <p>
+    <strong>Name:</strong>
+    <%= @vertical.name %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= @vertical.description %>
+  </p>
+
+  <%= link_to 'Edit', edit_vertical_path(@vertical) %> |
+  <%= link_to 'Back', verticals_path %>
+</div>

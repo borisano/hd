@@ -1,0 +1,131 @@
+<div class="show_div">
+  <p>
+    <strong>Priority:</strong>
+    <%= @task.priority.name %>
+  </p>
+
+  <p>
+    <strong>Member facing:</strong>
+    <%= @task.member_facing ? "Yes" : "No" %>
+  </p>
+
+  <p>
+    <strong>Request type:</strong>
+    <%= @task.request_type.name %>
+  </p>
+
+  <p>
+    <strong>Title:</strong>
+    <div class="text_block">
+      <%= @task.title %>
+    </div>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <div class="text_block">
+      <%= @task.description %>
+    </div>
+  </p>
+
+  <p>
+    <strong>Reported by:</strong>
+    <%= User.find(@task.reported_by).first_name %>
+  </p>
+
+  <p>
+    <strong>Assigned to:</strong>
+    <%= @task.assigned_to ? User.find(@task.assigned_to).first_name : "Unassigned" %>
+  </p>
+
+  <p>
+    <strong>Required by:</strong>
+    <%= @task.required_by.strftime("%d/%b/%y") %>
+  </p>
+
+  <p>
+    <strong>Vertical:</strong>
+    <%= @task.vertical.name %>
+  </p>
+
+  <p>
+    <strong>Link:</strong>
+    <%= @task.link %>
+  </p>
+
+  <span style="display:none;" id="edit_form_name">edit_task_<%= @task.id %></span>
+  <%= form_for(@task) do |f| %>
+    <div class="field">
+      <%= f.label :add_attachments %>
+      <%= f.file_field :attachment, multiple: true, name:"task[attachments_attributes][][doc]",required:true, onchange:"preview(this);" %>
+    </div>
+
+    <div id="image_thumbs">
+    </div>
+
+
+
+    <div class="actions">
+      <%= f.submit "Add attachments" %>
+    </div>
+  <% end %>
+
+  <%= render 'attachment', task: @task %>
+
+  <hr class="comments_hr" />
+  <h2>Comments</h2>
+  <%= form_for(@comment) do |f| %>
+    <%= f.text_area :content, cols:"125", rows:"5", class:"comment_form_text" %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :task_id, value: @task.id %>
+    <%= f.submit "submit" %>
+  <% end %>
+  <hr/>
+  <% @comments.each do | comment | %>
+    <table class="task_show_comments_table">
+      <tr id="comment_<%= comment.id %>">
+        <td rowspan="2" style="vertical-align:top;">
+          <% unless comment.user.avatar_url.blank? %>
+            <%= image_tag( File.join(root_url, comment.user.id.to_s, "user", "thumb", comment.user.id.to_s,"avatar","serve_image_x")) %>
+          <% else %>
+            <%= image_tag( File.join(root_url,"site_images/no_avatar_image.png"),class:"avatar_thumb") %>
+          <% end %>
+        </td>
+        <td class="commentor_name">
+          <%= comment.user.first_name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id="comment_content_<%= comment.id %>" class="comment_text_block">
+            <%= comment.content %>
+          </div>
+          <div id="<%= comment.id %>" style="display:none;" >
+            <%= form_for(comment) do |f| %>
+              <%= f.text_area :content , class:"comment_edit_block", rows:"8"  %>
+              <%= f.hidden_field :task_id, value: @task.id %>
+              <%= f.submit "Submit"%>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <% if can? :edit, Comment %>
+        <% if current_user.id == comment.user_id %>
+          <tr>
+            <td></td>
+            <td style="text-align:left;">
+              <button id="<%= 'edit_' + comment.id.to_s %>"  onclick=show("<%= comment.id %>") >Edit</button>
+              <%= button_to 'Delete', comment_path(comment), data: {confirm: 'Are you sure?'}, method: :delete, form: {style: 'display:inline;width:25px;'} %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  <br/>
+  <% end %>
+
+  <div class="bottom_link">
+    <%= link_to 'Edit', edit_task_path(@task) %>
+  </div>
+
+</div>

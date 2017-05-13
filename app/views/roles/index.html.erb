@@ -1,0 +1,22 @@
+<h1 class="object_title">Roles</h1>
+
+<table class="table table-responsive table-hover table-bordered sub_data">
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+    <% @roles.each do |role| %>
+      <tr>
+        <td><%= role.name %></td>
+        <td><%= role.description %></td>
+        <td><%= link_to 'Show', role %></td>
+        <td><%= link_to 'Edit', edit_role_path(role) %></td>
+        <td><%= link_to 'Destroy', role, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+</table>
+
+<div class="bottom_link">
+  <%= link_to 'New Role', new_role_path %>
+</div>

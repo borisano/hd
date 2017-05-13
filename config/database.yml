@@ -1,0 +1,19 @@
+  default: &default
+    host: localhost
+    adapter: postgresql
+    encoding: utf8
+    pool: 5
+    username: deploy
+    password: password #<%= ENV['APPNAME_DATABASE_PASSWORD'] %>
+  development:
+    <<: *default
+    database: bdhd_development
+  test:
+    <<: *default
+    database: bdhd_test
+  production:
+    <<: *default
+    database: bdhd_production
+    pool: 5
+    username: <%= ENV['BDHD_DATABASE_USER'] %>
+    password: <%= ENV['BDHD_DATABASE_PASSWORD'] %>

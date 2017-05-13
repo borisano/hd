@@ -1,0 +1,30 @@
+<% unless @task.attachments.blank? %>
+  <hr class="comments_hr" />
+
+  <h3>Attachments</h3>
+
+  <% @task.attachments.each  do | attachment | %>
+    <% if attachment.doc_identifier.presence %>
+      <div style="display:inline-grid;margin:10px;">
+        <%= link_to image_tag(
+                File.join(root_url,
+                          attachment.id.to_s,
+                          "thumb",
+                          "serve_doc"),class:"attachment_image"
+                        ),File.join(root_url,
+                                  attachment.id.to_s,
+                                    "type_doc",
+                                    "serve_doc"),title: attachment.doc_identifier,
+                                                 target: '_blank'
+        %>
+        <br/><%= attachment.doc_identifier.truncate(8) %>
+        <%= form_tag('/delete_doc', method: :get) do %>
+          <input type hidden name="id" value="<%= attachment.id %>">
+            <%= submit_tag "Delete",
+                            class:"image_delete_button",
+                            onclick:"return confirm('Are you sure you would want to delete this file?');" %>
+          <% end %>
+        <% end %>
+    </div>
+  <% end %>
+<% end %>

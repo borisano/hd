@@ -1,0 +1,14 @@
+<div class="show_div">
+  <p>
+    <strong>Name:</strong>
+    <%= @role.name %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= @role.description %>
+  </p>
+
+  <%= link_to 'Edit', edit_role_path(@role) %> |
+  <%= link_to 'Back', roles_path %>
+</div>

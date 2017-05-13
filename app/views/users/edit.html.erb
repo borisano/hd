@@ -1,0 +1,11 @@
+<h1 class="object_title">Editing User</h1>
+
+<%= render 'form' %>
+
+<div class="bottom_link">
+  <%= link_to 'Show', @user %>
+  <% if can? :index, :user %>
+    | <%= link_to 'Back', users_path %>
+  <% end %>
+  <%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+</div>

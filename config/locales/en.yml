@@ -1,0 +1,63 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  hello: "Hello world"
+  user:
+    account-deleted:        "Your account has been deleted."
+    successfully-approved:  "User acount has been approved"
+    successfully-updated:   "User has been successfully updated."
+    successfully-destroyed: "User has been successfully deleted."
+    user-account-deleted:   "The user account has been deleted."
+  priority:
+    successfully-created:   "Priority was successfully created."
+    successfully-updated:   "Priority was successfully updated."
+    successfully-destroyed: "Priority was successfully destroyed."
+    not-destroyed:          "Priority was not destroyed."
+  request_type:
+    successfully-created:   "Request Type was successfully created."
+    successfully-updated:   "Request Type was successfully updated."
+    successfully-destroyed: "Request Type was successfully destroyed."
+    not-destroyed:          "Request Type was not destroyed."
+  role:
+    successfully-created:   "Role was successfully created."
+    successfully-updated:   "Role was successfully updated."
+    successfully-destroyed: "Role was successfully destroyed."
+    not-destroyed:          "Role was not destroyed."
+  status:
+    successfully-created:   "Status was successfully created."
+    successfully-updated:   "Status was successfully updated."
+    successfully-destroyed: "Status was successfully destroyed."
+    not-destroyed:          "Status was not destroyed."
+  task:
+    successfully-created:   "Task was successfully created."
+    successfully-updated:   "Task was successfully updated."
+    successfully-destroyed: "Task was successfully destroyed."
+  vertical:
+    successfully-created:   "Vertical was successfully created."
+    successfully-updated:   "Vertical was successfully updated."
+    successfully-destroyed: "Vertical was successfully destroyed."
+    not-destroyed:          "Vertical was not destroyed."
+  activerecord:
+    errors:
+      models:
+        task:
+          too_long: "have reached their maximum capacity for this task."

@@ -1,0 +1,5 @@
+class RenameVertical < ActiveRecord::Migration[5.0]
+  def change
+    rename_column :tasks, :vertical, :vertical_id
+  end
+end

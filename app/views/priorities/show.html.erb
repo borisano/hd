@@ -1,0 +1,12 @@
+<div class="show_div">
+  <p>
+    <strong>Name:</strong>
+    <%= @priority.name %>
+  </p>
+  <p>
+    <strong>Description:</strong>
+    <%= @priority.description %>
+  </p>
+  <%= link_to 'Edit', edit_priority_path(@priority) %> |
+  <%= link_to 'Back', priorities_path %>
+</div>

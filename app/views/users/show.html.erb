@@ -1,0 +1,48 @@
+<div class="show_div">
+  <%= image_tag(File.join(root_url,
+                          "users",
+                           @user.id.to_s,
+                           "thumb",
+                           "serve_avatar")) %>
+
+  <% unless @user.avatar.blank? %>
+    <%= form_tag('/delete_avatar', method: :get) do %>
+      <input type hidden name="id" value="<%= @user.id %>">
+      <%= submit_tag "Delete", class:"image_delete_button",onclick:"return confirm('Are you sure you would want to delete this file?');" %>
+    <% end %>
+  <%end%>
+
+  <p>
+    <strong>First Name:</strong>
+    <%= @user.first_name %>
+  </p>
+
+  <p>
+    <strong>Last Name:</strong>
+    <%= @user.last_name %>
+  </p>
+
+  <p>
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </p>
+
+  <p>
+    <strong>Role:</strong>
+    <%= @user.role ? @user.role.name  : "" %>
+  </p>
+
+  <p>
+    <strong>Approved:</strong>
+    <%= @user.approved ? "Yes": "No" %>
+  </p>
+
+  <p>
+    <strong>ID:</strong>
+    <%= @user.id %>
+  </p>
+
+  <% if can? :update, :user %>
+      <%= link_to 'Edit', edit_user_path(@user.id) %>
+  <% end %>
+</div>

@@ -1,0 +1,164 @@
+<div class="form_div">
+  <%= form_for(task) do |f| %>
+    <% if task.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(task.errors.count, "error") %>
+          prohibited this task from being saved:</h2>
+        <ul>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :title %>
+      <%= f.text_area :title, cols:"50", rows:"3",required:true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_area :description, cols:"50", rows:"6",required:true %>
+    </div>
+
+    <% if current_user.role.name == 'admin' %>
+      <div class="field">
+        <%= f.label :reported_by %>
+        <%= f.collection_select(:reported_by_id,
+                                User.all,
+                                :id,
+                                :first_name,
+                                {
+                                  required:true,
+                                  selected: @task.reported_by ? @task.reported_by.id : current_user.id
+                                }
+                              )
+        %>
+      </div>
+    <% else %>
+      <div class="field">
+        <%= f.collection_select(:reported_by_id,
+                                User.all,
+                                :id,
+                                :first_name,
+                                {
+                                  required:true,
+                                  selected: @task.reported_by ? @task.reported_by.id : current_user.id
+                                },
+                                {style:"display:none;"}
+                                )
+        %>
+      </div>
+    <% end %>
+
+    <% if current_user.role.name == 'admin' %>
+      <div class="field">
+        <%= f.label :assigned_to %>
+        <%= f.collection_select(:assigned_to_id,
+                                  User.all,
+                                  :id,
+                                  :first_name,
+                                  {
+                                    required:true,
+                                    selected: @task.assigned_to ? @task.assigned_to.id : User.where(first_name: 'Unassigned').first.id
+                                  }
+                                )
+         %>
+      </div>
+    <% else %>
+      <%= f.collection_select(:assigned_to_id,
+                                User.all,
+                                :id,
+                                :first_name,
+                                {
+                                  required:true,
+                                  selected: @task.assigned_to ? @task.assigned_to.id : User.where(first_name: 'Unassigned').first.id
+                                },{style:"display:none;"}
+                              )
+      %>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :request_type %>
+      <%= f.collection_select(:request_type_id,
+                              RequestType.all,
+                              :id,
+                              :name,
+                              {prompt: true},
+                              {required:true}
+                              )
+      %>
+    </div>
+
+    <div class="field">
+      <%= f.label :member_facing %>
+      <%= f.check_box :member_facing %>
+    </div>
+
+    <div class="field">
+      <%= f.label :vertical %>
+      <%= f.collection_select(:vertical_id,
+                              Vertical.all,
+                              :id,
+                              :name,
+                              {prompt: true},
+                              {required:true}
+                              )
+      %>
+    </div>
+
+    <% if current_user.role.name == 'admin' %>
+      <div class="field">
+        <%= f.label :status %>
+        <%= f.collection_select(:status_id,
+                                Status.all,
+                                :id,
+                                :name,
+                                {prompt: true},
+                                {required:true}
+                                )
+        %>
+      </div>
+    <% else %>
+      <div class="field">
+        <%= f.text_field :status_id, value: @task.status_id ? @task.status_id : Status.where(name:"Triage").ids.first, style:"display:none" %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :required_date %>
+      <%= f.text_field :required_by, id:"datepicker",required: true, style:"text-align:center;" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :link %>
+      <%= f.text_field :link %>
+    </div>
+
+    <div class="field">
+      <%= f.label :priority %>
+      <%= f.collection_select(:priority_id,
+                              Priority.all,
+                              :id,
+                              :name,
+                              {prompt: true},
+                              {required:true}
+                              )
+      %>
+    </div>
+
+    <div class="field">
+      <%= f.label :add_attachments %>
+      <%= f.file_field :attachment, multiple: true, name:"task[attachments_attributes][][doc]" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+  <hr/>
+
+  <%= render 'attachment', task: @task %>
+
+</div>
