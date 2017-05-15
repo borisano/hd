@@ -51,7 +51,7 @@ function preview(e){
           }
         else
           {
-            img.src = "/site_images/no_doc_image_thumb.png";
+            img.src = "/site_images/doc_thumb.png";
           }
 
          img.title = event.target.name
