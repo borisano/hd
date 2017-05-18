@@ -1,9 +1,12 @@
 class Attachment < ApplicationRecord
   after_destroy :remove_attachment_directory
-
   mount_uploader :doc, DocUploader, dependent: :destroy
   belongs_to :task
   validates_associated :task
+  validates_size_of :doc, maximum: 25.megabyte, message: "Attachment size exceeds the allowable limit (25 MB)."
+
+  THUMB = "thumb"
+  DOC   = "doc"
 
   def is_image?
     [".png", ".JPEG",".JPG",".jpeg",".jpg"].include? File.extname(self.doc_identifier)
